@@ -6,7 +6,8 @@ import {
     USER_LOADED,
     AUTH_ERROR,
     LOGIN_SUCCESS,
-    LOGIN_FAIL
+    LOGIN_FAIL,
+    LOGOUT
 } from './types'
 import setAuthToken from '../utils/setAuthToken'
 
@@ -48,7 +49,7 @@ export const register = ({
             type: REGISTER_SUCCESS,
             payload: res.data
         })
-        
+
         dispatch(loadUser())
     } catch (err) {
         const errors = err.response.data.errors
@@ -94,6 +95,9 @@ export const login = (
 
 }
 
-
+// Logout / Clear Profile
+export const logout = () => dispatch => {
+    dispatch({ type: LOGOUT })
+}
 
 
