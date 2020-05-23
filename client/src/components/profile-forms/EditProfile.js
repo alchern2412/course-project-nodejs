@@ -31,6 +31,9 @@ const EditProfile = ({
 
     useEffect(() => {
         getCurrentProfile()
+        if (!loading && !profile.social) {
+            profile.social = {}
+        } 
         setFormData({
             company: loading || !profile.company ? '' : profile.company,
             website: loading || !profile.website ? '' : profile.website,

@@ -121,7 +121,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-// @route   GET api/profile/:user_id
+// @route   GET api/profiles/:user_id
 // @desc    Get Profile by user ID
 // @access  Public
 router.get('/users/:user_id', async (req, res) => {
@@ -131,14 +131,14 @@ router.get('/users/:user_id', async (req, res) => {
         }).populate('user', ['name', 'avatar'])
 
         if (!profile) {
-            return res.status(400).json({ msg: 'Profile not found' })
+            return res.status(404).json({ msg: 'Profile not found' })
         }
 
         res.json(profile)
     } catch (err) {
         console.error(err.message)
         if (err.kind == 'ObjectId') {
-            return res.status(400).json({ msg: 'Profile not found' })
+            return res.status(404).json({ msg: 'Profile not found' })
         }
         res.status(500).send('Server Error')
     }
