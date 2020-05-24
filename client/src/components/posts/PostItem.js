@@ -19,7 +19,8 @@ const PostItem = ({
     },
     addLike,
     removeLike,
-    deletePost
+    deletePost,
+    showActions
 }) => {
     return (
         <div className="post bg-white p-1 my-1">
@@ -55,12 +56,18 @@ const PostItem = ({
                 >
                     <i className="fas fa-thumbs-down"></i>
                 </button>
-                <Link to={`/post/${_id}`} className="btn btn-primary">
-                    Discussion {
-                        comments.length > 0 && (
-                            <span className="comment-count">{comments.length}</span>
-                        )
-                    }</Link>
+
+                {
+                    showActions && <>
+                        <Link to={`/posts/${_id}`} className="btn btn-primary">
+                            Discussion {
+                                comments.length > 0 && (
+                                    <span className="comment-count">{comments.length}</span>
+                                )
+                            }</Link>
+                    </>
+                }
+
                 {
                     !auth.loading && user === auth.user._id && (
                         <button
@@ -83,6 +90,11 @@ PostItem.propTypes = {
     addLike: PropTypes.func.isRequired,
     removeLike: PropTypes.func.isRequired,
     deletePost: PropTypes.func.isRequired,
+    showActions: PropTypes.bool
+}
+
+PostItem.defaultProps = {
+    showActions: true
 }
 
 const mapStateToProps = state => ({
