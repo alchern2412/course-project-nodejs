@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { getPosts } from '../../actions/post'
 import Spinner from '../layout/Spinner'
 import PostItem from './PostItem'
+import PostForm from './PostForm'
 
 const Posts = ({
     getPosts,
@@ -27,22 +28,13 @@ const Posts = ({
             Welcome to the community
         </p>
 
-            <div className="post-form">
-                <div className="post-form-header bg-primary">
-                    <h3>Say Something...</h3>
-                </div>
-                <form className="form my-1">
-                    <textarea cols="30" rows="5" placeholder="Create a post"></textarea>
-                    <input type="submit" value="Submit" className="btn btn-dark my-1" />
-                </form>
-
-                <div className="posts">
-                    {
-                        posts.map(post => (
-                            <PostItem key={post._id} post={post} />
-                        ))
-                    }
-                </div>
+            <PostForm />
+            <div className="posts">
+                {
+                    posts.map(post => (
+                        <PostItem key={post._id} post={post} />
+                    ))
+                }
             </div>
         </>
     )
