@@ -18,5 +18,9 @@ export const PROFILE_ERROR = 'PROFILE_ERROR'
 export const ACCOUNT_DELETED = 'ACCOUNT_DELETED'
 export const LOAD_PROFILE = 'LOAD_PROFILE'
 
+// post
+export const GET_POSTS = 'GET_POSTS'
+export const POST_ERROR = 'POST_ERROR'
+export const UPDATE_LIKES = 'UPDATE_LIKES'
 
 

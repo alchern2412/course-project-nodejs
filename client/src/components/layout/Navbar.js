@@ -18,6 +18,11 @@ const Navbar = ({
                     Developers
                 </Link>
             </li>
+            <li>
+                <Link to="/posts">
+                    Posts
+                </Link>
+            </li>
 
             <li>
                 <Link to="/dashboard">
