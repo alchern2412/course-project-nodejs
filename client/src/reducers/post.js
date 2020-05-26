@@ -58,7 +58,9 @@ export default (state = initialState, action) => {
                         ? { ...post, likes: payload.likes }
                         : post
                 )),
-                post: state.post._id === payload.postId ? { ...state.post, likes: payload.likes } : state.post,
+                post: state.post !== null
+                    ? (state.post._id === payload.postId ? { ...state.post, likes: payload.likes } : state.post)
+                    : null,
                 loading: false
             }
         case ADD_COMMENT:
