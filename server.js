@@ -49,6 +49,9 @@ io.sockets.on('connection', socket => {
       case 'server/REMOVE_COMMENT':
         socket.broadcast.emit('action', { type: 'REMOVE_COMMENT', payload: action.data })
         break;
+      case 'server/UPDATE_LIKES':
+        socket.broadcast.emit('action', { type: 'UPDATE_LIKES', payload: action.data })
+        break;
     }
   })
 })

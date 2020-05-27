@@ -66,20 +66,27 @@ export default (state = initialState, action) => {
         case ADD_COMMENT:
             return {
                 ...state,
-                post: state.post._id === payload.postId ? { ...state.post, comments: payload.comments } : {...state.post},
+                post: state.post !== null && state.post._id === payload.postId ? { ...state.post, comments: payload.comments } : state.post,
                 posts: state.posts.map(post => {
-                    return post._id === payload.postId ? {...post, comments: payload.comments} : post
+                    return post._id === payload.postId ? { ...post, comments: payload.comments } : post
                 }),
                 loading: false
             }
         case REMOVE_COMMENT:
             return {
                 ...state,
-                post: {
-                    ...state.post, comments: state.post.comments.filter(comment => (
-                        comment._id !== payload
-                    ))
-                },
+                post: state.post !== null && state.post._id === payload.postId
+                    ? {
+                        ...state.post,
+                        comments: state.post.comments.filter(comment => (
+                            comment._id !== payload.commentId
+                        ))
+                    }
+                    : null,
+                posts: state.posts.map(post => {
+                    post.comments = post.comments.filter(comment => comment._id !== payload.commentId)
+                    return post
+                }),
                 loading: false
             }
         default:

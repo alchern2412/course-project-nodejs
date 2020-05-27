@@ -40,6 +40,9 @@ export const addLike = postId => async dispatch => {
             type: UPDATE_LIKES,
             payload: { postId, likes: res.data }
         })
+
+        dispatch({ type: `server/${UPDATE_LIKES}`, data: { postId, likes: res.data } })
+
     } catch (err) {
         err.response && err.response.data && dispatch(setAlert(err.response.data.msg, 'danger'))
         dispatch({
@@ -61,6 +64,9 @@ export const removeLike = postId => async dispatch => {
             type: UPDATE_LIKES,
             payload: { postId, likes: res.data }
         })
+
+        dispatch({ type: `server/${UPDATE_LIKES}`, data: { postId, likes: res.data } })
+
     } catch (err) {
         err.response && err.response.data && dispatch(setAlert(err.response.data.msg, 'danger'))
         dispatch({
@@ -182,10 +188,9 @@ export const deleteComment = (postId, commentId) => async dispatch => {
 
         dispatch({
             type: REMOVE_COMMENT,
-            payload: commentId
+            payload: { postId, commentId }
         })
-        dispatch({ type: `server/${REMOVE_COMMENT}`, data: commentId })
-
+        dispatch({ type: `server/${REMOVE_COMMENT}`, data: { postId, commentId } })
 
         dispatch(setAlert('Comment Removed', 'success'))
     } catch (err) {
