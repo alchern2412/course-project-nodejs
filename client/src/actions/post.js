@@ -103,7 +103,7 @@ export const addPost = formData => async dispatch => {
             'Content-Type': 'application/json'
         }
     }
-    
+
     try {
         const res = await axios.post(`/api/posts`, formData, config)
 
@@ -111,6 +111,7 @@ export const addPost = formData => async dispatch => {
             type: ADD_POST,
             payload: res.data
         })
+        dispatch({ type: `server/${ADD_POST}`, data: res.data })
 
         dispatch(setAlert('Post Created', 'success'))
     } catch (err) {
@@ -151,7 +152,7 @@ export const addComment = (postId, formData) => async dispatch => {
             'Content-Type': 'application/json'
         }
     }
-    
+
     try {
         const res = await axios.post(`/api/posts/comment/${postId}`, formData, config)
 

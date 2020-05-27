@@ -18,9 +18,28 @@ connectDb()
 
 io.sockets.on('connection', socket => {
   console.log('client connected')
+  socket.emit('action', {
+    type: 'SET_ALERT', payload: {
+      id: 83842,
+      alertType: 'success',
+      msg: 'You are connected SOCKET.IO'
+    }
+  })
+  setTimeout(() => {
+    socket.emit('action', {
+      type: 'REMOVE_ALERT',
+      payload: 83842
+    })
+  }, 10000)
 
-  socket.on('echo', data => {
-    io.sockets.emit('message', data)
+
+  socket.on('action', action => {
+    switch (action.type) {
+      case 'server/ADD_POST':
+        console.log('Added post', action.data)
+        socket.broadcast.emit('action', { type: 'ADD_POST', payload: action.data })
+        break;
+    }
   })
 })
 
