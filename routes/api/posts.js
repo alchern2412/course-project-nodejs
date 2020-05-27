@@ -35,6 +35,8 @@ router.post('/', [auth, [
 
         const post = await newPost.save()
 
+        req.io.sockets.emit('create', post)
+        
         res.json(post)
     } catch (e) {
         console.error(e.message)

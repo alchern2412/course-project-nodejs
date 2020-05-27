@@ -2,10 +2,33 @@ const express = require('express');
 const connectDb = require('./config/db')
 const path = require('path')
 
+const PORT = process.env.PORT || 5000;
 const app = express();
+
+const io = require('socket.io')
+  .listen(
+    app.listen(
+      PORT,
+      () => console.log(`Server started on port ${PORT}`)
+    )
+  )
 
 // Connect Database
 connectDb()
+
+io.sockets.on('connection', socket => {
+  console.log('client connected')
+
+  socket.on('echo', data => {
+    io.sockets.emit('message', data)
+  })
+})
+
+// Make io accessible to our router
+app.use((req, res, next) => {
+  req.io = io
+  next()
+})
 
 // Init Middleware
 app.use(express.json({ extended: false }))
@@ -26,6 +49,7 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+
+
