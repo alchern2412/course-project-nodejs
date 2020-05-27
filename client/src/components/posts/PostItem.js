@@ -64,7 +64,8 @@ const PostItem = ({
                                 comments.length > 0 && (
                                     <span className="comment-count">{comments.length}</span>
                                 )
-                            }</Link>
+                            }
+                        </Link>
                     </>
                 }
 

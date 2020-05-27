@@ -33,7 +33,7 @@ const EditProfile = ({
         getCurrentProfile()
         if (!loading && !profile.social) {
             profile.social = {}
-        } 
+        }
         setFormData({
             company: loading || !profile.company ? '' : profile.company,
             website: loading || !profile.website ? '' : profile.website,
@@ -82,13 +82,13 @@ const EditProfile = ({
     return (
         <>
             <h1 className="large text-primary">
-                Create Your Profile
+                Update Your Profile
             </h1>
             <p className="lead">
                 <i className="fas fa-user"></i>
             Let's eet some information to make
             your profile stand out
-        </p>
+            </p>
 
             <small>* = required fields</small>
 

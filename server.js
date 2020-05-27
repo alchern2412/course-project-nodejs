@@ -34,10 +34,20 @@ io.sockets.on('connection', socket => {
 
 
   socket.on('action', action => {
+    console.log('Added post', action.data)
+
     switch (action.type) {
       case 'server/ADD_POST':
-        console.log('Added post', action.data)
         socket.broadcast.emit('action', { type: 'ADD_POST', payload: action.data })
+        break;
+      case 'server/DELETE_POST':
+        socket.broadcast.emit('action', { type: 'DELETE_POST', payload: action.data })
+        break;
+      case 'server/ADD_COMMENT':
+        socket.broadcast.emit('action', { type: 'ADD_COMMENT', payload: action.data })
+        break;
+      case 'server/REMOVE_COMMENT':
+        socket.broadcast.emit('action', { type: 'REMOVE_COMMENT', payload: action.data })
         break;
     }
   })
