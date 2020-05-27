@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
-const {check, validationResult} = require('express-validator')
+const { v4: uuid } = require('uuid');
+
+const { check, validationResult } = require('express-validator')
 const auth = require('../../middleware/auth')
 
 const User = require('../../models/User')
@@ -18,7 +20,7 @@ router.post('/', [auth, [
 ]], async (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        return res.status(400).json({errors: errors.array()})
+        return res.status(400).json({ errors: errors.array() })
     }
 
     try {
@@ -36,7 +38,7 @@ router.post('/', [auth, [
         const post = await newPost.save()
 
         req.io.sockets.emit('create', post)
-        
+
         res.json(post)
     } catch (e) {
         console.error(e.message)
@@ -49,7 +51,7 @@ router.post('/', [auth, [
 // @access  Private
 router.get('/', auth, async (req, res) => {
     try {
-        const posts = await Post.find().sort({date: -1})
+        const posts = await Post.find().sort({ date: -1 })
         res.json(posts)
     } catch (e) {
         console.error(e.message)
@@ -65,14 +67,14 @@ router.get('/:id', auth, async (req, res) => {
         const post = await Post.findById(req.params.id)
 
         if (!post) {
-            return res.status(404).json({msg: 'Post not found'})
+            return res.status(404).json({ msg: 'Post not found' })
         }
 
         res.json(post)
     } catch (e) {
         console.error(e.message)
         if (e.kind === 'ObjectId') {
-            return res.status(404).json({msg: 'Post not found'})
+            return res.status(404).json({ msg: 'Post not found' })
         }
         res.status(500).send('Server Error')
     }
@@ -86,21 +88,21 @@ router.delete('/:id', auth, async (req, res) => {
         const post = await Post.findById(req.params.id)
 
         if (!post) {
-            return res.status(404).json({msg: 'Post not found'})
+            return res.status(404).json({ msg: 'Post not found' })
         }
 
         // Check user
         if (post.user.toString() !== req.user.id) {
-            return res.status(401).json({msg: 'User not authorized'})
+            return res.status(401).json({ msg: 'User not authorized' })
         }
 
         await post.remove()
 
-        res.send({msg: 'Post removed'})
+        res.send({ msg: 'Post removed' })
     } catch (e) {
         console.error(e.message)
         if (e.kind === 'ObjectId') {
-            return res.status(404).json({msg: 'Post not found'})
+            return res.status(404).json({ msg: 'Post not found' })
         }
         res.status(500).send('Server Error')
     }
@@ -112,16 +114,28 @@ router.delete('/:id', auth, async (req, res) => {
 router.put('/like/:id', auth, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id)
-
+        const user = await User.findById(req.user.id)
 
         // Check if the post has already been liked
         if (post.likes.filter(like => like.user.toString() === req.user.id).length > 0) {
-            return res.status(400).json({msg: 'Post already liked'})
+            return res.status(400).json({ msg: 'Post already liked' })
         }
 
         post.likes.unshift({
             user: req.user.id
         })
+
+        const alertId = uuid()
+        req.io.sockets.emit('action', {
+            type: 'SET_TOAST',
+            payload: {
+                fromUser: user,
+                toUserId: post.user,
+                message: `${user.name} liked your post with text '${post.text.substring(0, 50)}...'`,
+                appearance: 'success'
+            }
+        })
+
 
         await post.save()
 
@@ -131,7 +145,7 @@ router.put('/like/:id', auth, async (req, res) => {
 
         // Check if the post exist
         if (e.kind === 'ObjectId') {
-            return res.status(400).json({msg: 'Post does not exist'})
+            return res.status(400).json({ msg: 'Post does not exist' })
         }
 
         res.status(500).send('Server Error')
@@ -148,7 +162,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
 
         // Check if the post has already been liked
         if (post.likes.filter(like => like.user.toString() === req.user.id).length === 0) {
-            return res.status(400).json({msg: 'Post has not yet been liked'})
+            return res.status(400).json({ msg: 'Post has not yet been liked' })
         }
 
         // Get remove index
@@ -164,7 +178,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
 
         // Check if the post exist
         if (e.kind === 'ObjectId') {
-            return res.status(400).json({msg: 'Post does not exist'})
+            return res.status(400).json({ msg: 'Post does not exist' })
         }
 
         res.status(500).send('Server Error')
@@ -182,7 +196,7 @@ router.post('/comment/:id', [auth, [
 ]], async (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        return res.status(400).json({errors: errors.array()})
+        return res.status(400).json({ errors: errors.array() })
     }
 
     try {
@@ -207,7 +221,7 @@ router.post('/comment/:id', [auth, [
         console.error(e.message)
         // Check if the post exist
         if (e.kind === 'ObjectId') {
-            return res.status(400).json({msg: 'Post does not exist'})
+            return res.status(400).json({ msg: 'Post does not exist' })
         }
         res.status(500).send('Server Error')
     }
@@ -220,19 +234,19 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id)
         if (!post) {
-            return res.status(404).json({msg: 'Post does not exist'})
+            return res.status(404).json({ msg: 'Post does not exist' })
         }
         // Pull out comment
         const comment = post.comments.find(comment => comment.id === req.params.comment_id)
 
         // Make sure comment exists
         if (!comment) {
-            return res.status(404).json({msg: 'Comment does not exist'})
+            return res.status(404).json({ msg: 'Comment does not exist' })
         }
 
         // Check user
         if (comment.user.toString() !== req.user.id) {
-            return res.status(401).json({msg: 'User not authorized'})
+            return res.status(401).json({ msg: 'User not authorized' })
         }
 
         // Get remove index
@@ -249,7 +263,7 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
         console.error(e.message)
         // Check if the post exist
         if (e.kind === 'ObjectId') {
-            return res.status(400).json({msg: 'Post does not exist'})
+            return res.status(400).json({ msg: 'Post does not exist' })
         }
         res.status(500).send('Server Error')
     }

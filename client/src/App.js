@@ -4,6 +4,8 @@ import './App.scss'
 import Navbar from './components/layout/Navbar'
 import Landing from './components/layout/Landing'
 
+import { ToastProvider } from 'react-toast-notifications'
+
 // Redux
 import { Provider } from 'react-redux'
 import store from './store'
@@ -21,14 +23,16 @@ const App = () => {
     }, [])
     return (
         <Provider store={store}>
-            <Router>
-                <Navbar />
-                <Switch>
-                    <Route exact path='/' component={Landing} />
-                    <Route component={Routes} />
-                </Switch>
+            <ToastProvider>
+                <Router>
+                    <Navbar />
+                    <Switch>
+                        <Route exact path='/' component={Landing} />
+                        <Route component={Routes} />
+                    </Switch>
 
-            </Router>
+                </Router>
+            </ToastProvider>
         </Provider>
     )
 }

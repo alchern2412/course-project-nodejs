@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route, Switch} from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import Register from '../auth/Register'
 import Login from '../auth/Login'
@@ -19,6 +19,7 @@ import Profile from '../profile/Profile'
 import Posts from '../posts/Posts'
 import Post from '../post/Post'
 import { NotFound } from '../layout/NotFound'
+import Toast from '../layout/Toast'
 
 
 
@@ -26,6 +27,7 @@ export const Routes = () => {
     return (
         <section className="container">
             <Alert />
+            <Toast />
             <Switch>
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />

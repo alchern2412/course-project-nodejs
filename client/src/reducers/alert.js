@@ -1,6 +1,6 @@
 import { SET_ALERT, REMOVE_ALERT } from '../actions/types'
 
-const initialState = []
+const initialState = [] // alert: {id, alertType, msg} 
 
 
 export default (state = initialState, action) => {
@@ -11,6 +11,8 @@ export default (state = initialState, action) => {
             return [...state, payload]
         case REMOVE_ALERT:
             return state.filter(alert => alert.id !== payload)
+        // case NOTIFY_LIKE:
+        //     return payload[...state]
         default: 
             return [...state]
     }

@@ -2,6 +2,9 @@ const express = require('express');
 const connectDb = require('./config/db')
 const path = require('path')
 
+const { v4: uuid } = require('uuid');
+
+
 const PORT = process.env.PORT || 5000;
 const app = express();
 
@@ -18,9 +21,10 @@ connectDb()
 
 io.sockets.on('connection', socket => {
   console.log('client connected')
+  const alertId = uuid()
   socket.emit('action', {
     type: 'SET_ALERT', payload: {
-      id: 83842,
+      id: alertId,
       alertType: 'success',
       msg: 'You are connected SOCKET.IO'
     }
@@ -28,14 +32,12 @@ io.sockets.on('connection', socket => {
   setTimeout(() => {
     socket.emit('action', {
       type: 'REMOVE_ALERT',
-      payload: 83842
+      payload: alertId
     })
   }, 10000)
 
 
   socket.on('action', action => {
-    console.log('Added post', action.data)
-
     switch (action.type) {
       case 'server/ADD_POST':
         socket.broadcast.emit('action', { type: 'ADD_POST', payload: action.data })
