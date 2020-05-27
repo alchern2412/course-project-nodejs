@@ -7,7 +7,8 @@ import {
     LOGIN_SUCCESS,
     LOGOUT,
     ACCOUNT_DELETED,
-    SET_TOAST
+    SET_TOAST,
+    UNSET_TOAST
 } from '../actions/types'
 
 const initialState = {
@@ -17,7 +18,7 @@ const initialState = {
     user: null,
     toast: {
         appearance: 'success',
-        message: 'Hello'
+        message: ''
     }
 }
 
@@ -53,8 +54,6 @@ export default (state = initialState, action) => {
                 loading: false
             }
         case SET_TOAST:
-            console.log(payload);
-
             return {
                 ...state,
                 toast: state.user && state.user._id === payload.toUserId
@@ -64,6 +63,14 @@ export default (state = initialState, action) => {
                         message: `${payload.message}`
                     }
                     : state.toast
+            }
+        case UNSET_TOAST:
+            return {
+                ...state,
+                toast: {
+                    appearance: 'success',
+                    message: ''
+                }
             }
 
         default:

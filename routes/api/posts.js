@@ -216,6 +216,17 @@ router.post('/comment/:id', [auth, [
 
         await post.save()
 
+        const alertId = uuid()
+        req.io.sockets.emit('action', {
+            type: 'SET_TOAST',
+            payload: {
+                fromUser: user,
+                toUserId: post.user,
+                message: `${user.name} commeted your post '${post.text.substring(0, 50)}...' - '${newComment.text}'`,
+                appearance: 'success'
+            }
+        })
+
         res.json(post.comments)
     } catch (e) {
         console.error(e.message)

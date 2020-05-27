@@ -6,7 +6,7 @@ import rootReducer from './reducers'
 import io from 'socket.io-client'
 import createSocketIoMiddleware from 'redux-socket.io'
 
-let socket = io('http://localhost:5000')
+let socket = io(window.location.host)
 let socketIoMiddleware = createSocketIoMiddleware(
     socket,
     'server/'

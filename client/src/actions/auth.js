@@ -8,7 +8,8 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
-    CLEAR_PROFILE
+    CLEAR_PROFILE,
+    UNSET_TOAST
 } from './types'
 import setAuthToken from '../utils/setAuthToken'
 
@@ -101,4 +102,9 @@ export const logout = () => dispatch => {
     dispatch({ type: LOGOUT })
 }
 
-
+// Unset Toast
+export const unsetToast = () => dispatch => {
+    dispatch({
+        type: UNSET_TOAST
+    })
+}
