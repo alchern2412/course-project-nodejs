@@ -15,7 +15,7 @@ const Landing = ({
         <section className="landing">
             <div className="dark-overlay">
                 <div className="landing-inner">
-                    <h1 className="x-large">Course Project Node JS</h1>
+                    <h1 className="x-large">Social Platform for Programmers</h1>
                     <p className="lead">Create developer profile, share
                         posts and get help from other developers</p>
                     <div className="buttons">

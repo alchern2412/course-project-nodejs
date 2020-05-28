@@ -108,6 +108,45 @@ router.delete('/:id', auth, async (req, res) => {
     }
 })
 
+// @route   PUT api/posts/:id
+// @desc    Change a Post
+// @access  Private
+router.put('/:id', [auth, [
+    check('text', 'Text is required')
+        .not()
+        .isEmpty()
+]], async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
+    try {
+        const post = await Post.findById(req.params.id)
+        const user = await User.findById(req.user.id)
+
+        // Check if post belongs current user
+        if (post.user.toString() !== user._id.toString()) {
+            return res.status(401).json({ msg: `Post does not belong current user!` })
+        }
+
+        post.text = req.body.text;
+
+        await post.save()
+        res.json(post)
+    } catch (e) {
+        console.error(e.message)
+
+        // Check if the post exist
+        if (e.kind === 'ObjectId') {
+            return res.status(400).json({ msg: 'Post does not exist' })
+        }
+
+        res.status(500).send('Server Error')
+    }
+})
+
+
 // @route   PUT api/posts/like/:id
 // @desc    Like a Post
 // @access  Private

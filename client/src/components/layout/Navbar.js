@@ -54,7 +54,7 @@ const Navbar = ({
         <nav className="navbar bg-dark">
             <h1>
                 <Link to="/">
-                    <i className="fas fa-code"></i> CourseProject
+                    <i className="fas fa-laptop-code"></i> Social Platform for Programmers
                 </Link>
             </h1>
             {
