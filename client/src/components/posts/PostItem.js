@@ -71,6 +71,17 @@ const PostItem = ({
 
                 {
                     !auth.loading && user === auth.user._id && (
+                        <Link to={`/edit-post/${_id}`}
+                            type="button"
+                            className="btn btn-info"
+                        >
+                            <i className="fas fa-edit" />
+                        </Link>
+                    )
+                }
+
+                {
+                    !auth.loading && user === auth.user._id && (
                         <button
                             onClick={e => deletePost(_id)}
                             type="button"

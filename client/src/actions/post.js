@@ -6,6 +6,7 @@ import {
     UPDATE_LIKES,
     DELETE_POST,
     ADD_POST,
+    EDIT_POST,
     GET_POST,
     ADD_COMMENT,
     REMOVE_COMMENT
@@ -121,6 +122,34 @@ export const addPost = formData => async dispatch => {
         dispatch({ type: `server/${ADD_POST}`, data: res.data })
 
         dispatch(setAlert('Post Created', 'success'))
+    } catch (err) {
+        dispatch({
+            type: POST_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status
+            }
+        })
+    }
+}
+
+// Edit post
+export const editPost = (postId, formData, history) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    try {
+        const res = await axios.put(`/api/posts/${postId}`, formData, config)
+
+        dispatch({
+            type: EDIT_POST,
+            payload: res.data
+        })
+        history.push(`/posts/${postId}`)
+        dispatch(setAlert('Post Changed', 'success'))
     } catch (err) {
         dispatch({
             type: POST_ERROR,

@@ -18,6 +18,7 @@ import Profiles from '../profiles/Profiles'
 import Profile from '../profile/Profile'
 import Posts from '../posts/Posts'
 import Post from '../post/Post'
+import EditPost from '../post/EditPost'
 import { NotFound } from '../layout/NotFound'
 import Toast from '../layout/Toast'
 
@@ -38,6 +39,7 @@ export const Routes = () => {
                 <PrivateRoute exact path="/add-education" component={AddEducation} />
                 <PrivateRoute exact path="/posts" component={Posts} />
                 <PrivateRoute exact path="/posts/:id" component={Post} />
+                <PrivateRoute exact path="/edit-post/:id" component={EditPost} />
                 <Route exact path="/profiles" component={Profiles} />
                 <Route exact path="/profile/:id" component={Profile} />
                 <Route component={NotFound} />
